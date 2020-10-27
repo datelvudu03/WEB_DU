@@ -1,0 +1,13 @@
+<%= simple_form_for @task do |f| %>
+
+
+  <%= f.input :deadline_at, as: :date, :include_blank => true, label: 'Deadline' %>
+  <%= f.input :title, label: 'Titul' %>
+  <%= f.input :note, label: 'Poznámka' %>
+  <%= f.input :is_done, as: :boolean, label: 'Hotovo' %>
+
+
+  <%= f.button :submit, 'Potvrdit' %>
+<% end %>
+
+<%= link_to 'Zpět', tasks_path %>
