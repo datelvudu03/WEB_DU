@@ -1,0 +1,22 @@
+<h1>Categories#index</h1>
+
+<%= link_to 'Add new', new_category_path %>
+<%= link_to 'To Tasks', tasks_path %>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Color</th>
+    <th></th>
+  </tr>
+
+  <% @categories.each do |category| %>
+    <tr>
+      <td><%= category.title %></td>
+      <td><%= category.color %>
+      <td><%= link_to 'EDIT',edit_category_path(category) %></td>
+      <td><%= link_to 'Smazat', category_path(category),
+                      method: :delete,
+                      data: {confirm: 'Opravdu chcete smazat?'} %></td>
+    </tr>
+  <% end %>
+</table>

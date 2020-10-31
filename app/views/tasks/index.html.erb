@@ -1,2 +1,23 @@
 <h1>Tasks#index</h1>
 <p>Find me in app/views/tasks/index.html.erb</p>
+
+<%= link_to 'Add new', new_task_path %>
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Text</th>
+    <th></th>
+  </tr>
+
+  <% @tasks.each do |task| %>
+    <tr>
+      <td><%= task.title %></td>
+      <td><%= task.note %></td>
+      <td><%= task.category %></td>
+      <td><%= link_to 'EDIT',edit_task_path(task) %></td>
+      <td><%= link_to 'Smazat', task_path(task),
+                      method: :delete,
+                      data: {confirm: 'Opravdu chcete smazat?'} %></td>
+    </tr>
+  <% end %>
+</table>

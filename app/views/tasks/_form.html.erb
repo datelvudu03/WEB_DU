@@ -1,11 +1,29 @@
 <%= simple_form_for @task do |f| %>
 
+  <% if @task.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@task.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @task.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
   <%= f.input :deadline_at, as: :date, :include_blank => true, label: 'Deadline' %>
   <%= f.input :title, label: 'Titul' %>
   <%= f.input :note, label: 'Poznámka' %>
   <%= f.input :is_done, as: :boolean, label: 'Hotovo' %>
 
+  <%= f.association :category, collection: current_user.categories, selected: f.object.category_id, :include_blank => true, label: 'Kategorie' %>
+
+  <%= fields_for(@task_tags_association) do |tta|%>
+    <%= collection_select(:tags, :id, @all_tags, :id, :title, {}, {:multiple => true}) %>
+    <% end %>
 
   <%= f.button :submit, 'Potvrdit' %>
 <% end %>

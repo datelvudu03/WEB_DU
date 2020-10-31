@@ -10,7 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_27_182620) do
+ActiveRecord::Schema.define(version: 2020_10_28_182246) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "title"
+    t.string "color"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
+  create_table "tag_associations", force: :cascade do |t|
+    t.integer "tag_id"
+    t.integer "task_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_tag_associations_on_tag_id"
+    t.index ["task_id"], name: "index_tag_associations_on_task_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "title"
+    t.string "color"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tags_on_user_id"
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.datetime "deadline_at"
