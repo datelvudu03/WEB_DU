@@ -1,0 +1,24 @@
+<%= simple_form_for @tag do |f| %>
+
+  <% if @tag.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@tag.errors.count, "error") %> prohibited
+        this article from being saved:
+      </h2>
+      <ul>
+        <% @tag.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.input :title, label: 'Titul' %>
+  <%= f.input :color, label: 'barva' %>
+
+
+  <%= f.button :submit, 'Potvrdit' %>
+<% end %>
+
+<%= link_to 'Zpět', tags_path %>
