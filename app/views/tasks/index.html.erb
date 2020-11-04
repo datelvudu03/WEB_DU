@@ -1,19 +1,32 @@
 <h1>Tasks#index</h1>
 <p>Find me in app/views/tasks/index.html.erb</p>
 
+<%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
 <%= link_to 'Add new', new_task_path %>
 <table>
   <tr>
     <th>Title</th>
     <th>Text</th>
-    <th></th>
+    <th>Category</th>
+    <th>Tag</th>
   </tr>
 
   <% @tasks.each do |task| %>
     <tr>
       <td><%= task.title %></td>
       <td><%= task.note %></td>
-      <td><%= task.category %></td>
+      <%unless task.category_id.blank?%>
+      <td><%= Category.find(task.category_id).title %></td>
+      <% else %>
+        <td>No category</td>
+      <% end %>
+
+      <% @user_tags.each do |tags_to_task| %>
+        <%if tags_to_task.task_id == task.id %>
+          <% t = @user_all_tags.find(tags_to_task.tag_id) %>
+          <td><%= t.title %></td>
+        <% end %>
+      <% end %>
       <td><%= link_to 'EDIT',edit_task_path(task) %></td>
       <td><%= link_to 'Smazat', task_path(task),
                       method: :delete,

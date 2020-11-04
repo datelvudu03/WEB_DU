@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   def index
-    @categories = Category.all
+    @categories = Category.where(user_id: current_user.id)
   end
   def new
     @category = Category.new

@@ -21,8 +21,9 @@
 
   <%= f.association :category, collection: current_user.categories, selected: f.object.category_id, :include_blank => true, label: 'Kategorie' %>
 
+
   <%= fields_for(@task_tags_association) do |tta|%>
-    <%= collection_select(:tags, :id, @all_tags, :id, :title, {}, {:multiple => true}) %>
+    <%= collection_check_boxes(:tags, :id, @all_tags, :id, :title, {}, {:multiple => true}) %>
     <% end %>
 
   <%= f.button :submit, 'Potvrdit' %>

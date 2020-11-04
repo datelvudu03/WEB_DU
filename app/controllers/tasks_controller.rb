@@ -5,14 +5,25 @@ class TasksController < ApplicationController
 
   def index
     @tasks = Task.where(user_id: current_user.id)
+    @user_tags = TagAssociation.joins("INNER JOIN tasks ON tasks.id == tag_associations.task_id where tasks.user_id = #{current_user.id}")
+    @user_all_tags = Tag.where(user_id: current_user.id)
   end
 
   def edit
     @task = Task.find(params[:id])
+    @all_tags = Tag.where(user_id: current_user.id)
   end
 
   def update
     @task = Task.find(params[:id])
+    @tag_association = TagAssociation.where(task_id: params[:id]).destroy_all
+
+    params[:tags][:id].each do |tag|
+      if !tag.empty?
+        @task.tag_associations.build(tag_id: tag)
+      end
+    end
+
 
     if @task.update(tasks_params)
       redirect_to tasks_path
@@ -20,9 +31,11 @@ class TasksController < ApplicationController
       render 'edit'
     end
   end
+
   def new
     @task = Task.new
-    @all_tags = Tag.all
+    @user_catergories = User.find(current_user.id).categories
+    @all_tags = Tag.where(user_id: current_user.id)
     @task_tags_association = @task.tag_associations.build
   end
 
@@ -31,28 +44,35 @@ class TasksController < ApplicationController
   end
 
   def create
+
     @task = Task.new(tasks_params)
     @task.user_id = current_user.id
+
     params[:tags][:id].each do |tag|
       if !tag.empty?
-        @task.tag_associations.build(:tag_id => tag)
+        @task.tag_associations.build(tag_id: tag)
       end
     end
+
     @task.save
     redirect_to @task
   end
 
   def destroy
-    @tag_association = TagAssociation.where("task_id = ?", params[:id]).destroy_all
+    @tag_association = TagAssociation.where('task_id = ?', params[:id]).destroy_all
     #find(:all, :conditions => ['task_id = ?', params[:id]]).destroy
     @task = Task.find(params[:id]).destroy
 
     redirect_to tasks_index_path
   end
 
+
+
   private
   def tasks_params
     params.require(:task).permit( :deadline_at,:title,:note,:is_done, :category_id, :tag_id, :user_id)
   end
+
+
 
 end

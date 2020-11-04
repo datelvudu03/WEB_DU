@@ -2,6 +2,7 @@
 
 <%= link_to 'Add new', new_tag_path %>
 <%= link_to 'To Tasks', tasks_path %>
+<%if !@tags.empty? %>
 <table>
   <tr>
     <th>Title</th>
@@ -10,6 +11,7 @@
   </tr>
 
   <% @tags.each do |tag| %>
+
     <tr>
       <td><%= tag.title %></td>
       <td><%= tag.color %>
@@ -19,4 +21,7 @@
                       data: {confirm: 'Opravdu chcete smazat?'} %></td>
     </tr>
   <% end %>
+  <%else %>
+  <p> No tags </p>
+  <%end %>
 </table>

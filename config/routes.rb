@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, :controllers => {
-      registrations: 'registrations'
-  }
+  devise_for :users #, :controllers => { registrations: 'registrations'}
   get 'tasks/index'
   root 'main_pages#index'
   get 'main_pages/index'
