@@ -35,7 +35,7 @@ class TasksController < ApplicationController
   def new
     @task = Task.new
     @user_catergories = User.find(current_user.id).categories
-    @all_tags = Tag.where(user_id: current_user.id)
+    @all_tags = User.find(current_user.id).tags
     @task_tags_association = @task.tag_associations.build
   end
 
@@ -60,7 +60,6 @@ class TasksController < ApplicationController
 
   def destroy
     @tag_association = TagAssociation.where('task_id = ?', params[:id]).destroy_all
-    #find(:all, :conditions => ['task_id = ?', params[:id]]).destroy
     @task = Task.find(params[:id]).destroy
 
     redirect_to tasks_index_path

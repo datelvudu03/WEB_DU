@@ -18,7 +18,7 @@
   <%= f.input :title, label: 'Titul' %>
   <%= f.input :note, label: 'Poznámka' %>
   <%= f.input :is_done, as: :boolean, label: 'Hotovo' %>
-
+  <%= f.association :tag, collection: Tag.where(user_id: current_user.id), selected: f.object.tag_ids, :include_blank => true, label: 'Tag' %>
   <%= f.association :category, collection: current_user.categories, selected: f.object.category_id, :include_blank => true, label: 'Kategorie' %>
 
 

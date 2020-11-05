@@ -14,56 +14,75 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-# ja vim ze tohle je prasarna ale co :-D
-
 =begin
-user_count = User.count
-
-max_count = user_count + 1
-
-user_count.times do |count|
-  count += 1
-  unless Category.where(user_id: count).exists?
-    Category.create!(title: "Osobní", user_id: count)
-    Category.create!(title: "Škola", user_id: count)
-    Category.create!(title: "Práce", user_id: count)
-  end
-
-  unless Tag.where(user_id: count).exists?
-    Tag.create!(title: "UCL", user_id: count)
-    Tag.create!(title: "JSE", user_id: count)
-    Tag.create!(title: "WEB", user_id: count)
-    Tag.create!(title: "3DT", user_id: count)
-    Tag.create!(title: "PR1", user_id: count)
-    Tag.create!(title: "PES", user_id: count)
-    Tag.create!(title: "Nákupy", user_id: count)
-    Tag.create!(title: "Wishlist", user_id: count)
-  end
-
-
-  unless Task.where(user_id: count).exists?
-    Task.create!(title: "Toto je jednoduchý úkol", category_id: nil, is_done: false, user_id: count)
-    Task.create!(title: "Toto je už dokončený úkol", category_id: nil, is_done: true, user_id: count)
-
-    category_for_task = Category.find_by(user_id: count, title: "Osobní")
-    Task.create!(title: "Nakoupit na večeři", category_id: category_for_task.id, is_done: false, user_id: count)
-
-    category_for_task2 = Category.find_by(user_id: count, title: "Škola")
-    Task.create!(title: "Udělat semestrální práci z předmětu WEB", category_id: category_for_task2.id, is_done: false, user_id: count)
-
-    task_tag = Task.find_by(user_id: count, title: "Nakoupit na večeři")
-    tag_tag = Tag.find_by(user_id: count, title: "Nákupy")
-    TagAssociation.create!(tag_id: tag_tag.id, task_id: task_tag.id)
-
-    task_tag = Task.find_by(user_id: count, title: "Udělat semestrální práci z předmětu WEB")
-    tag_tag = Tag.find_by(user_id: count, title: "UCL")
-    TagAssociation.create!(tag_id: tag_tag.id, task_id: task_tag.id)
-
-    task_tag = Task.find_by(user_id: count, title: "Udělat semestrální práci z předmětu WEB")
-    tag_tag = Tag.find_by(user_id: count, title: "WEB")
-    TagAssociation.create!(tag_id: tag_tag.id, task_id: task_tag.id)
-  end
-
-
+2.times do |t|
+  user = User.new
+  user.email = "test#{t}@example.com"
+  user.username = "test_user"
+  user.password = "123456789"
+  user.password_confirmation = "123456789"
+  user.confirmed_at = Time.now
+  user.save!
 end
 =end
+
+user_count = User.count
+unless user_count.zero?
+  user_count += 1
+end
+
+
+  user = User.new
+  user.id = user_count
+  user.email = "test#{user_count}@example.com"
+  user.username = "test_user"
+  user.password = "123456789"
+  user.password_confirmation = "123456789"
+  user.confirmed_at = Time.now
+  user.save!
+
+
+all_user = User.all.ids
+
+all_user.each do |count|
+
+  20.times do |cat_t|
+    Category.create!(title: "Cat #{cat_t}", user_id: count)
+  end
+
+  50.times do |tag_t|
+    Tag.create!(title: "Tag #{tag_t}", user_id: count)
+  end
+
+  398.times do |task_t|
+    user_category = Category.where(user_id: count).sample.id
+    rand_cat = rand(0..Category.where(user_id: count).count)
+    if rand_cat.zero?
+      user_category = nil
+    end
+
+    num = rand(0..1)
+    if num.zero?
+      is_done = true
+    else
+      is_done = false
+    end
+
+    @user_tag = Tag.where(user_id: count).sample(rand(0..10))
+    rand_cat = rand(0..Tag.where(user_id: count).count)
+    if rand_cat.zero?
+      @user_tag = nil
+    end
+
+
+    if @user_tag.nil?
+      Task.create!(deadline_at: Time.at(rand * Time.now.to_i) ,title: "Task #{task_t + 1}", category_id: user_category, is_done: is_done, user_id: count)
+    else
+      Task.create!(deadline_at: Time.at(rand * Time.now.to_i), title: "Task #{task_t + 1}", category_id: user_category, is_done: is_done, user_id: count, tags: @user_tag)
+    end
+  end
+
+  Task.create!(deadline_at: Time.at(rand * Time.now.to_i),title: "Task 399", is_done: false, user_id: count)
+  Task.create!(deadline_at: Time.at(rand * Time.now.to_i),title: "Task 400", category_id: Category.where(user_id: count).sample.id, is_done: false, user_id: count)
+
+end
