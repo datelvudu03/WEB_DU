@@ -21,12 +21,14 @@
         <td>No category</td>
       <% end %>
 
-      <% @user_tags.each do |tags_to_task| %>
-        <%if tags_to_task.task_id == task.id %>
-          <% t = @user_all_tags.find(tags_to_task.tag_id) %>
-          <td><%= t.title %></td>
+      <% unless Task.find(task.id).tags.blank?%>
+      <% Task.find(task.id).tags.select(:title).each do |tag| %>
+        <td><%= tag.title%></td>
+        <%end %>
+        <% else %>
+        <td> No Tag</td>
         <% end %>
-      <% end %>
+
       <td><%= link_to 'EDIT',edit_task_path(task) %></td>
       <td><%= link_to 'Smazat', task_path(task),
                       method: :delete,
