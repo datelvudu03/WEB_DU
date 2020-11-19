@@ -19,6 +19,9 @@ class TagsController < ApplicationController
   def create
     @tag = Tag.new(tag_params)
     @tag.user_id = current_user.id
+    temp = covert_hex_rgb(@tag.color)
+    @tag.color.clear << temp
+
     if @tag.save
       redirect_to tags_path
     else
@@ -40,8 +43,22 @@ class TagsController < ApplicationController
     @tag = Tag.find(params[:id]).destroy
     redirect_to tags_path
   end
+  helper_method :count_tasks, :tag_task
 
   private
+
+  def covert_hex_rgb(hex)
+    "#{hex[1,6]}".scan(/../).map {|color| color.to_i(16)}.join(", ")
+  end
+
+  def tag_task(id)
+    Tag.find(id).tasks
+  end
+
+  def count_tasks(id)
+    Tag.find(id).tasks.count
+  end
+
   def tag_params
     params.require(:tag).permit(:title,:color)
   end

@@ -1,38 +1,92 @@
-<h1>Tasks#index</h1>
-<p>Find me in app/views/tasks/index.html.erb</p>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="<%= main_pages_index_path %>">Main Page</a></li>
+    <li class="breadcrumb-item">Tasks</li>
+  </ol>
+</nav>
+<div class="container">
 
-<%= link_to 'Log out', destroy_user_session_path, :method => :delete %>
-<%= link_to 'Add new', new_task_path %>
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Text</th>
-    <th>Category</th>
-    <th>Tag</th>
-  </tr>
-
-  <% @tasks.each do |task| %>
-    <tr>
-      <td><%= task.title %></td>
-      <td><%= task.note %></td>
-      <%unless task.category_id.blank?%>
-      <td><%= Category.find(task.category_id).title %></td>
-      <% else %>
-        <td>No category</td>
-      <% end %>
-
-      <% unless Task.find(task.id).tags.blank?%>
-      <% Task.find(task.id).tags.select(:title).each do |tag| %>
-        <td><%= tag.title%></td>
-        <%end %>
-        <% else %>
-        <td> No Tag</td>
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 offset-sm-2">
+      <div class="container">
+        <%= simple_form_for :search, url: tasks_index_path, method: "GET", html: {class: 'form-inline'} do |f| %>
+          <%= f.input :title, input_html: {value: ""} %>
+          <%= f.submit "Search", class: "btn btn-primary" %>
         <% end %>
+      </div>
+        <div class="container">
+        <%= simple_form_for :task, url: tasks_index_path, method: "GET", html: {class: 'form-inline'} do |f| %>
+          <%= f.input :category_id, collection: current_user.categories, as: :select,:include_blank => 'No Category' %>
+            <% f.collection_radio_buttons :category_id, current_user.categories,:id,:title %>
+            <%= f.input :tag, collection: current_user.tags, as: :check_boxes %>
+          <%= f.submit "Search", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <td><%= link_to 'EDIT',edit_task_path(task) %></td>
-      <td><%= link_to 'Smazat', task_path(task),
-                      method: :delete,
-                      data: {confirm: 'Opravdu chcete smazat?'} %></td>
-    </tr>
-  <% end %>
-</table>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 offset-sm-2">
+
+      <div class="container">
+        <h1>Tasks: <%=@tasks.count %></h1>
+        <button onclick= "window.location.href='<%= new_task_path %>';" type="submit" class="btn btn-primary">
+          Add New</button>
+        <button onclick= "window.location.href='<%= tasks_path %>';" type="submit" class="btn btn-primary">
+          Refresh</button>
+        <% @tasks.each do |task| %>
+          <div class="tasks_container">
+            <h3><%= task.title %></h3>
+            <div class="container">
+              <% if task.deadline_at.present? %>
+              <span style="background-color:greenyellow;font-weight:bold"><%= task.deadline_at.try(:strftime, ("%m/%d/%Y")) %></span>
+                <% else %>
+                <span style="background-color:#ff0000;font-weight:bold"> No Deadline</span>
+                  <% end %>
+                </div>
+            <div class="container">
+              <% if task.note.present? %>
+                <span style="background-color:greenyellow;font-weight:bold">There is a note.</span>
+              <% else %>
+                <span style="background-color:#ff0000;font-weight:bold"> No Note</span>
+              <% end %>
+            </div>
+
+            <div class="container">
+
+              <span style="background-color:rgb(<%=add_color_cat(task.category_id)%>);font-weight:bold">
+                <%= add_cat(task.category_id) %></span>
+            </div>
+
+            <div class="container">
+              <% unless Task.find(task.id).tags.blank? %>
+                <% Task.find(task.id).tags.select(:title, :color).each do |tag| %>
+                  <span style="background-color:rgb(<%= tag.color%>);font-weight:bold"><%= tag.title %></span>
+                <% end %>
+              <% else %>
+                <span style="background-color:#FF0000;font-weight:bold">No Tag</span>
+              <% end %>
+
+            </div>
+            <div class="container">
+              <td><%= link_to 'Show',task_path(task) %></td>
+              <td><%= link_to 'Edit',edit_task_path(task) %></td>
+              <td><%= link_to 'Delete', task_path(task),
+                              method: :delete,
+                              data: {confirm: 'Opravdu chcete smazat?'} %></td>
+            </div>
+          </div>
+        <% end %>
+        <div class="digg_pagination">
+          <%= will_paginate @tasks %>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

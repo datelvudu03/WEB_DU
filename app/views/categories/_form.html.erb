@@ -15,8 +15,7 @@
   <% end %>
 
   <%= f.input :title, label: 'Titul' %>
-  <%= f.input :color, label: 'barva' %>
-
+  <%= color_field(:category, :color)%>
 
   <%= f.button :submit, 'Potvrdit' %>
 <% end %>

@@ -1,0 +1,47 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="<%= main_pages_index_path %>">Main Page</a></li>
+    <li class="breadcrumb-item"><a href="<%= categories_path %>">Categories</a></li>
+    <li class="breadcrumb-item">Category detail</li>
+  </ol>
+</nav>
+<div class="main">
+  <h1>Category detail</h1>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Color(RGB)</th>
+      <th>Created at</th>
+      <th>Updated at </th>
+      <th>Number of tasks</th>
+    </tr>
+    <tr>
+      <td><%= @category.id %></td>
+      <td><%= @category.title %></td>
+      <td> <span style="background-color:rgb(<%= @category.color%>);font-weight:bold">
+        (<%= @category.color %>)  </span></td>
+      <td><%= @category.created_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= @category.updated_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= count_tasks(@category.id) %></td>
+    </tr>
+  </table>
+
+  <table class="sort_table_tasks">
+    <tr>
+      <th>Task belongs to this category </th>
+    </tr>
+    <%if category_task(@category.id).empty? %>
+      <tr>
+        <td>No tasks</td>
+      </tr>
+      <%else %>
+    <% category_task(@category.id).each do |task| %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= link_to 'Tasks Detail ', task_path(task) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

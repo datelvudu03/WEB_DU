@@ -1,2 +1,50 @@
-<h1>MainPages#index</h1>
-<p>Find me in app/views/main_pages/index.html.erb</p>
+<div class="col-xs-12 col-sm-8 offset-sm-2 ">
+  <h1>Main Pages</h1>
+  <aside>
+    <h2> Welcome: <%= current_user.username%></h2>
+  </aside>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Main Page</li>
+  </ol>
+</nav>
+</div>
+<div class="sidenav">
+  <button class="dropdown-btn">Můj účet
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <a <%= link_to 'Odhlásit se', destroy_user_session_path, method: :delete %></a>
+    <a <%= link_to 'Upravit přihlašovací údaje a smazat účet', edit_user_registration_path %></a>
+  </div>
+
+  <button class="dropdown-btn">Nastavení
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <a <%= link_to 'Categories', categories_path %></a>
+    <a <%= link_to 'Tags', tags_path %></a>
+
+  </div>
+  <a <%= link_to 'Tasks', tasks_path %></a>
+</div>
+
+
+
+<script>
+
+    var dropdown = document.getElementsByClassName("dropdown-btn");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+        dropdown[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var dropdownContent = this.nextElementSibling;
+            if (dropdownContent.style.display === "block") {
+                dropdownContent.style.display = "none";
+            } else {
+                dropdownContent.style.display = "block";
+            }
+        });
+    }
+</script>

@@ -1,14 +1,49 @@
-<h1> Detail úkolu </h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="<%= main_pages_index_path %>">Main Page</a></li>
+    <li class="breadcrumb-item"><a href="<%= tags_path %>">Tags</a></li>
+    <li class="breadcrumb-item">Tag detail</li>
+  </ol>
+</nav>
 
-<%= link_to 'INDEX',  tags_path %>
+<div class="main">
+  <h1>Tag detail</h1>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Color(RGB)</th>
+      <th>Created at</th>
+      <th>Updated at </th>
+      <th>Number of tasks</th>
+    </tr>
+    <tr>
+      <td><%= @tag.id %></td>
+      <td><%= @tag.title %></td>
+      <td> <span style="background-color: rgb(<%= @tag.color%>);font-weight:bold">
+        <%= @tag.color %>   </span></td>
+      <td><%= @tag.created_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= @tag.updated_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= count_tasks(@tag.id) %></td>
+    </tr>
+  </table>
 
-<p>
-  <strong>Titul:</strong>
-  <%= @tag.title %>
-</p>
+  <table class="sort_table_tasks">
+    <tr>
+      <th>Task belongs to this tag </th>
+    </tr>
 
-<p>
-  <strong>barva:</strong>
-  <td><%= @tag.color %></td>
-
-</p>
+    <%if tag_task(@tag.id).empty? %>
+      <tr>
+      <td>No tasks</td>
+      </tr>
+    <%else %>
+      <% tag_task(@tag.id).each do |task| %>
+        <tr>
+          <td><%= task.title %></td>
+          <td><%= link_to 'Tasks Detail ', task_path(task) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

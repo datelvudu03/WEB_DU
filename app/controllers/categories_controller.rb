@@ -16,6 +16,8 @@ class CategoriesController < ApplicationController
   def create
     @category = Category.new(category_params)
     @category.user_id = current_user.id
+    temp = covert_hex_rgb(@category.color)
+    @category.color.clear << temp
     if @category.save
       redirect_to categories_path
     else
@@ -35,10 +37,27 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id]).destroy
+    @task = Task.find_by(category_id: params[:id])
+    @task.update(category_id: nil)
     redirect_to categories_path
   end
 
+  helper_method :count_tasks, :category_task
+
   private
+
+  def covert_hex_rgb(hex)
+    "#{hex[1,6]}".scan(/../).map {|color| color.to_i(16)}.join(", ")
+  end
+
+  def category_task(id)
+    Category.find(id).tasks
+  end
+
+  def count_tasks(id)
+    Category.find(id).tasks.count
+  end
+
   def category_params
     params.require(:category).permit( :title,:color)
   end

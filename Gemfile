@@ -13,6 +13,17 @@ gem 'will_paginate', '~> 3.3'
 
 gem 'bootstrap', '~> 4.5', '>= 4.5.3'
 
+gem 'bundler', '~> 2.1', '>= 2.1.4'
+
+gem 'sprockets-rails', '~> 3.2', '>= 3.2.2'
+
+gem 'jquery-rails', '~> 4.4'
+
+gem 'popper_js', '~> 1.16'
+
+
+
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 # Use sqlite3 as the database for Active Record
@@ -27,6 +38,9 @@ gem 'webpacker', '~> 4.0'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.7'
+
+gem 'faker', '~> 2.14'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -40,7 +54,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', '~> 11.1', '>= 11.1.3', platforms: [:mri, :mingw, :x64_mingw]
 end
 
 group :development do
