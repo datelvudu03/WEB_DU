@@ -14,11 +14,13 @@
           <%= f.submit "Search", class: "btn btn-primary" %>
         <% end %>
       </div>
-        <div class="container">
+      <div class="container">
         <%= simple_form_for :task, url: tasks_index_path, method: "GET", html: {class: 'form-inline'} do |f| %>
-          <%= f.input :category_id, collection: current_user.categories, as: :select,:include_blank => 'No Category' %>
-            <% f.collection_radio_buttons :category_id, current_user.categories,:id,:title %>
-            <%= f.input :tag, collection: current_user.tags, as: :check_boxes %>
+
+          <%= f.input :category_id, collection: current_user.categories, as: :select, :include_blank => true %>
+
+          <%= f.input :tag, collection: current_user.tags, as: :check_boxes, :include_blank => true %>
+
           <%= f.submit "Search", class: "btn btn-primary" %>
         <% end %>
       </div>
@@ -33,21 +35,23 @@
     <div class="col-xs-12 col-sm-8 offset-sm-2">
 
       <div class="container">
-        <h1>Tasks: <%=@tasks.count %></h1>
-        <button onclick= "window.location.href='<%= new_task_path %>';" type="submit" class="btn btn-primary">
-          Add New</button>
-        <button onclick= "window.location.href='<%= tasks_path %>';" type="submit" class="btn btn-primary">
-          Refresh</button>
+        <h1>Tasks</h1>
+        <button onclick="window.location.href='<%= new_task_path %>';" type="submit" class="btn btn-primary">
+          Add New
+        </button>
+        <button onclick="window.location.href='<%= tasks_path %>';" type="submit" class="btn btn-primary">
+          Refresh
+        </button>
         <% @tasks.each do |task| %>
           <div class="tasks_container">
             <h3><%= task.title %></h3>
             <div class="container">
               <% if task.deadline_at.present? %>
-              <span style="background-color:greenyellow;font-weight:bold"><%= task.deadline_at.try(:strftime, ("%m/%d/%Y")) %></span>
-                <% else %>
+                <span style="background-color:greenyellow;font-weight:bold"><%= task.deadline_at.try(:strftime, ("%d/%m/%Y")) %></span>
+              <% else %>
                 <span style="background-color:#ff0000;font-weight:bold"> No Deadline</span>
-                  <% end %>
-                </div>
+              <% end %>
+            </div>
             <div class="container">
               <% if task.note.present? %>
                 <span style="background-color:greenyellow;font-weight:bold">There is a note.</span>
@@ -73,8 +77,8 @@
 
             </div>
             <div class="container">
-              <td><%= link_to 'Show',task_path(task) %></td>
-              <td><%= link_to 'Edit',edit_task_path(task) %></td>
+              <td><%= link_to 'Show', task_path(task) %></td>
+              <td><%= link_to 'Edit', edit_task_path(task) %></td>
               <td><%= link_to 'Delete', task_path(task),
                               method: :delete,
                               data: {confirm: 'Opravdu chcete smazat?'} %></td>

@@ -21,8 +21,8 @@
       <td><%= @category.title %></td>
       <td> <span style="background-color:rgb(<%= @category.color%>);font-weight:bold">
         (<%= @category.color %>)  </span></td>
-      <td><%= @category.created_at.try(:strftime, ("%m/%d/%Y")) %></td>
-      <td><%= @category.updated_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= @category.created_at.try(:strftime, ("%d/%m/%Y")) %></td>
+      <td><%= @category.updated_at.try(:strftime, ("%d/%m/%Y")) %></td>
       <td><%= count_tasks(@category.id) %></td>
     </tr>
   </table>

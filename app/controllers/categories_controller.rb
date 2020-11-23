@@ -1,7 +1,7 @@
 class CategoriesController < ApplicationController
 
   def index
-    @categories = Category.where(user_id: current_user.id)
+    @categories = Category.order(:title).where(user_id: current_user.id)
   end
   def new
     @category = Category.new
@@ -37,8 +37,10 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category = Category.find(params[:id]).destroy
-    @task = Task.find_by(category_id: params[:id])
-    @task.update(category_id: nil)
+    @task = Task.where(category_id: params[:id])
+    unless @task.blank?
+      @task.update(category_id: nil)
+    end
     redirect_to categories_path
   end
 

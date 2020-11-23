@@ -30,68 +30,66 @@ def add_date
 end
 
 def add_color
-  Faker::Color.rgb_color.join(", ")
+  Faker::Color.rgb_color.join(', ')
 end
 
 user_count = User.count
-unless user_count.zero?
-  user_count += 1
-end
+user_count += 1 unless user_count.zero?
 
 
-  user = User.new
-  user.id = user_count
-  user.email = "test#{user_count}@example.com"
-  user.username = "test_user"
-  user.password = "123456789"
-  user.password_confirmation = "123456789"
-  user.confirmed_at = Time.now
-  user.save!
+user = User.new
+user.id = user_count
+user.email = "test#{user_count}@example.com"
+user.username = 'test_user'
+user.password = '123456789'
+user.password_confirmation = '123456789'
+user.confirmed_at = Time.now
+user.save!
 
 
 all_user = User.all.ids
 
 all_user.each do |count|
 
-  20.times do |cat_t|
-    Category.create!(title: "Cat #{cat_t}", user_id: count, color: add_color)
+  20.times do
+    Category.create!(title: Faker::Book.publisher, user_id: count, color: add_color)
   end
+  # "Cat #{cat_t}"
 
-  50.times do |tag_t|
-    Tag.create!(title: "Tag #{tag_t}", user_id: count, color: add_color)
+  50.times do
+    Tag.create!(title: Faker::Book.genre, user_id: count, color: add_color)
   end
-
-  398.times do |task_t|
+  #"Tag #{tag_t}"
+  398.times do
     user_category = Category.where(user_id: count).sample.id
     rand_cat = rand(0..Category.where(user_id: count).count)
-    if rand_cat.zero?
-      user_category = nil
-    end
+    user_category = nil if rand_cat.zero?
 
     num = rand(0..1)
-    if num.zero?
-      is_done = true
-    else
-      is_done = false
-    end
+    is_done = if num.zero?
+                true
+              else
+                false
+              end
 
     @user_tag = Tag.where(user_id: count).sample(rand(0..10))
     rand_cat = rand(0..Tag.where(user_id: count).count)
-    if rand_cat.zero?
-      @user_tag = nil
-    end
+    @user_tag = nil if rand_cat.zero?
 
 
     if @user_tag.nil?
-      Task.create!(deadline_at: add_date, title: "Task #{task_t + 1}", note: Faker::Quote.famous_last_words, category_id: user_category, is_done: is_done, user_id: count)
+      Task.create!(deadline_at: add_date, title: Faker::Quote.famous_last_words, note: Faker::Quote.famous_last_words,
+                   category_id: user_category, is_done: is_done, user_id: count)
     else
-      Task.create!(deadline_at: add_date, title: "Task #{task_t + 1}", note: Faker::Quote.famous_last_words,category_id: user_category, is_done: is_done, user_id: count, tags: @user_tag)
+      Task.create!(deadline_at: add_date, title: Faker::Quote.famous_last_words, note: Faker::Quote.famous_last_words,
+                   category_id: user_category, is_done: is_done, user_id: count, tags: @user_tag)
     end
   end
 
-  Task.create!(deadline_at: add_date,title: "Task 399", note: Faker::Quote.famous_last_words, is_done: false, user_id: count)
-  Task.create!(deadline_at: add_date,title: "Task 400", note: Faker::Quote.famous_last_words, category_id: Category.where(user_id: count).sample.id, is_done: false, user_id: count)
-
+  Task.create!(deadline_at: add_date,title: Faker::Quote.famous_last_words, note: Faker::Quote.famous_last_words,
+               is_done: false, user_id: count)
+  Task.create!(deadline_at: add_date,title: Faker::Quote.famous_last_words, note: Faker::Quote.famous_last_words,
+               category_id: Category.where(user_id: count).sample.id, is_done: false, user_id: count)
 end
 
 

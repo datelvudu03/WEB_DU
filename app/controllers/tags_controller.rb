@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
 
   def index
-    @tags = Tag.where(user_id: current_user.id)
+    @tags = Tag.order(:title).where(user_id: current_user.id)
   end
 
   def new

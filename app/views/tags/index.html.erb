@@ -22,8 +22,8 @@
       <td><%= tag.title %></td>
       <td> <span style="background-color:rgb(<%= tag.color%>);font-weight:bold">
         <%= tag.color %>   </span></td>
-      <td><%= tag.created_at.try(:strftime, ("%m/%d/%Y")) %></td>
-      <td><%= tag.updated_at.try(:strftime, ("%m/%d/%Y")) %></td>
+      <td><%= tag.created_at.try(:strftime, ("%d/%m/%Y")) %></td>
+      <td><%= tag.updated_at.try(:strftime, ("%d/%m/%Y")) %></td>
       <td><%= count_tasks(tag.id) %> </td>
       <td><%= link_to 'Show',tag_path(tag) %></td>
       <td><%= link_to 'Edit',edit_tag_path(tag) %></td>
