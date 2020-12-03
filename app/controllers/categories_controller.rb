@@ -1,5 +1,7 @@
 class CategoriesController < ApplicationController
-
+  load_and_authorize_resource
+  before_action :user_signed_in?
+  before_action :authenticate_user!
   def index
     @categories = Category.order(:title).where(user_id: current_user.id)
   end

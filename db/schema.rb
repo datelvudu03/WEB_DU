@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2020_10_28_182246) do
     t.string "username", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
+    t.boolean "admin", default: false
     t.datetime "remember_created_at"
     t.string "confirmation_token"
     t.datetime "confirmed_at"

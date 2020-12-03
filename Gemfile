@@ -21,6 +21,7 @@ gem 'jquery-rails', '~> 4.4'
 
 gem 'popper_js', '~> 1.16'
 
+gem 'cancancan', '~> 3.1'
 
 
 

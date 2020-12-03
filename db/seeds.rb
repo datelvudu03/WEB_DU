@@ -14,17 +14,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
-=begin
-2.times do |t|
-  user = User.new
-  user.email = "test#{t}@example.com"
-  user.username = "test_user"
-  user.password = "123456789"
-  user.password_confirmation = "123456789"
-  user.confirmed_at = Time.now
-  user.save!
-end
-=end
+
 def add_date
   DateTime.now + (rand * 31)
 end
@@ -33,10 +23,8 @@ def add_color
   Faker::Color.rgb_color.join(', ')
 end
 
+### create user
 user_count = User.count
-user_count += 1 unless user_count.zero?
-
-
 user = User.new
 user.id = user_count
 user.email = "test#{user_count}@example.com"
@@ -50,10 +38,10 @@ user.save!
 all_user = User.all.ids
 
 all_user.each do |count|
-
-  20.times do
-    Category.create!(title: Faker::Book.publisher, user_id: count, color: add_color)
-  end
+  unless User.find(count).tasks.count >= 400
+    20.times do
+      Category.create!(title: Faker::Book.publisher, user_id: count, color: add_color)
+    end
   # "Cat #{cat_t}"
 
   50.times do
@@ -90,6 +78,7 @@ all_user.each do |count|
                is_done: false, user_id: count)
   Task.create!(deadline_at: add_date,title: Faker::Quote.famous_last_words, note: Faker::Quote.famous_last_words,
                category_id: Category.where(user_id: count).sample.id, is_done: false, user_id: count)
+  end
 end
 
 

@@ -73,6 +73,7 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.1.3)
+    cancancan (3.1.0)
     capybara (3.33.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -230,6 +231,7 @@ DEPENDENCIES
   bullet (~> 6.1)
   bundler (~> 2.1, >= 2.1.4)
   byebug (~> 11.1, >= 11.1.3)
+  cancancan (~> 3.1)
   capybara (>= 2.15)
   devise (~> 4.7, >= 4.7.3)
   faker (~> 2.14)

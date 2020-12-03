@@ -1,5 +1,7 @@
 class TagsController < ApplicationController
-
+  load_and_authorize_resource
+  before_action :user_signed_in?
+  before_action :authenticate_user!
   def index
     @tags = Tag.order(:title).where(user_id: current_user.id)
   end
